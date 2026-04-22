@@ -1,8 +1,8 @@
 package Clases;
 
 public class Bono extends Activo{
-    public Bono(String codigo, String nombre, double precioActual) {
-        super(codigo, nombre, precioActual);
+    public Bono(String codigo, String nombre) {
+        super(codigo, nombre);
     }
 
     @Override
