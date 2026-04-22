@@ -17,7 +17,12 @@ public abstract class Activo {
     private static final double precioMinimo = 10.0;
     private static final double precioMaximo = 500.0;
 
-    // Constructor
+    /**
+     * Constructor para inicializar un activo con su identificación básica.
+     * Al invocarse, dispara automáticamente la generación del historial de precios.
+     * @param codigo Identificador alfanumérico.
+     * @param nombre Nombre oficial del activo.
+     */
     public Activo(String codigo, String nombre) {
         this.codigo = codigo;
         this.nombre = nombre;
@@ -46,10 +51,17 @@ public abstract class Activo {
     }
 
     // Metodos
-    // Metodo Abstracto
+    /**
+     * Calcula el índice de riesgo o inestabilidad del activo.
+     * @return Valor numérico (double) que representa la volatilidad.
+     */
     public abstract double calcularVolatilidad();
 
-    // Generar tendencia
+    /**
+     * Devuelve una lista con los precios de los últimos 7 periodos registrados.
+     * Si hay menos de 7, devuelve todos los disponibles.
+     * @return List de Double con los precios más recientes.
+     */
     public List<Double> getUltimos7Precios() {
         int n = historialPrecios.size();
 
@@ -58,7 +70,10 @@ public abstract class Activo {
         );
     }
 
-    // Creación de Precios Aleatorios
+    /**
+     * Llena el historial con 30 precios aleatorios entre los límites configurados.
+     * Al finalizar, establece el precio actual basado en el último valor generado.
+     */
     public void generarHistorialPrecios(){
         Random r = new Random();
 

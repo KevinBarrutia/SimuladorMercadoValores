@@ -5,6 +5,7 @@ public class Accion extends Activo{
         super(codigo, nombre);
     }
 
+
     @Override
     public double calcularVolatilidad() {
         return 0;
