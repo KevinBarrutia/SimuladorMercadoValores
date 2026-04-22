@@ -18,10 +18,9 @@ public abstract class Activo {
     private static final double precioMaximo = 500.0;
 
     // Constructor
-    public Activo(String codigo, String nombre, double precioActual) {
+    public Activo(String codigo, String nombre) {
         this.codigo = codigo;
         this.nombre = nombre;
-        this.precioActual = precioActual;
         historialPrecios = new ArrayList<>();
         generarHistorialPrecios();
     }
@@ -68,7 +67,7 @@ public abstract class Activo {
             historialPrecios.add(precio);
         }
 
-        // opcional: actualizar precio actual al último generado
+        // Actualizar precio actual al último generado
         if (!historialPrecios.isEmpty()) {
             precioActual = historialPrecios.getLast();
         }
