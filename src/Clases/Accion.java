@@ -1,8 +1,8 @@
 package Clases;
 
 public class Accion extends Activo{
-    public Accion(String codigo, String nombre, double precioActual) {
-        super(codigo, nombre, precioActual);
+    public Accion(String codigo, String nombre) {
+        super(codigo, nombre);
     }
 
     @Override
