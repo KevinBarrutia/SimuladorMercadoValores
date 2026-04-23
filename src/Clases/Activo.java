@@ -87,4 +87,38 @@ public abstract class Activo {
             precioActual = historialPrecios.getLast();
         }
     }
+
+    /**
+     * Determina la dirección del precio comparando el corto plazo contra el largo plazo.
+     * Según la consigna:
+     * - "alcista": si el promedio de los últimos 7 días > promedio de 30 días.
+     * - "bajista": si el precio actual < 80% del promedio de los 30 días.
+     * - "estable": en cualquier otro caso.
+     * * @return String con el estado de la tendencia.
+     */
+    public String tendencia() {
+        // 1. Obtener el promedio de 30 días
+        double suma30 = 0;
+        for (double p : historialPrecios) {
+            suma30 += p;
+        }
+        double media30 = suma30 / historialPrecios.size();
+
+        // 2. Obtener el promedio de los últimos 7 días
+        List<Double> ultimos7 = getUltimos7Precios();
+        double suma7 = 0;
+        for (double p : ultimos7) {
+            suma7 += p;
+        }
+        double media7 = suma7 / ultimos7.size();
+
+        // 3. Aplicar lógica de la imagen
+        if (media7 > media30) {
+            return "alcista";
+        } else if (precioActual < (media30 * 0.8)) {
+            return "bajista";
+        } else {
+            return "estable";
+        }
+    }
 }

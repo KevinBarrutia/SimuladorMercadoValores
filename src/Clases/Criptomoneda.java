@@ -84,14 +84,14 @@ public class Criptomoneda extends Activo {
             varianza += Math.pow(precio - media, 2);
         }
         varianza /= ultimos7Precios.size();
-        double volatilidad = Math.sqrt(varianza);
+        double volatilidad = Math.sqrt(varianza); // Volatilidad Base
 
         // Factor criptomoneda
         volatilidad *= 2.5;
 
         // Riesgo por concentración
-        for (double w : walletsGrandes) {
-            if (w > 20) {
+        for (double wallet : walletsGrandes) {
+            if (wallet > 20) {
                 volatilidad += 0.5;
                 break;
             }
