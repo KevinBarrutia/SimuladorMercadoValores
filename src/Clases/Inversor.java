@@ -1,57 +1,74 @@
 package Clases;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.List;
 
 public class Inversor {
 
-    // Atributos
+    // Atributos según el requerimiento de listas paralelas
     private String dni;
     private double capital;
-    private String perfil; // "Conservador", "Moderado", "Agresivo"
-    // Usamos un Map para guardar Activo y la cantidad (Integer) asociada
-    private Map<Activo, Integer> portfolio;
+    private String perfil;
+
+    // Listas paralelas: el índice 0 de 'portfolio' corresponde al índice 0 de 'cantidades'
+    private ArrayList<Activo> portfolio;
+    private ArrayList<Integer> cantidades;
 
     public Inversor(String dni, double capital, String perfil) {
         this.dni = dni;
         this.capital = capital;
         this.perfil = perfil;
-        this.portfolio = new HashMap<>();
+        this.portfolio = new ArrayList<>();
+        this.cantidades = new ArrayList<>();
     }
 
     /**
-     * Determina si el inversor puede comprar un activo según su perfil
-     * y el riesgo del activo.
+     * Valida si el inversor puede comprar según su perfil de riesgo.
      */
     public boolean puedeComprar(Activo activo, int cantidad) {
         double costoTotal = activo.getPrecioActual() * cantidad;
         double vol = activo.calcularVolatilidad();
 
-        // Verificar primero si tiene dinero suficiente
         if (costoTotal > this.capital) return false;
 
-        // Lógica de perfil de riesgo
         switch (this.perfil.toLowerCase()) {
             case "conservador":
                 return vol < 1.0;
             case "moderado":
                 return vol < 2.0 || activo.tendencia().equals("alcista");
             case "agresivo":
-                return true; // Compra cualquiera
+                return true;
             default:
                 return false;
         }
     }
 
     /**
-     * Realiza la compra si la validación de puedeComprar es exitosa.
+     * Compra el activo y gestiona las dos listas mediante el mismo índice.
      */
     public void comprar(Activo a, int cantidad) {
         if (puedeComprar(a, cantidad)) {
             this.capital -= (a.getPrecioActual() * cantidad);
-            // Actualizar portfolio: si ya existe suma la cantidad, si no, la crea
-            portfolio.put(a, portfolio.getOrDefault(a, 0) + cantidad);
+
+            // Buscamos si ya poseemos el activo para actualizar su cantidad
+            int indiceEncontrado = -1;
+            for (int i = 0; i < portfolio.size(); i++) {
+                if (portfolio.get(i).getCodigo().equals(a.getCodigo())) {
+                    indiceEncontrado = i;
+                    break;
+                }
+            }
+
+            if (indiceEncontrado != -1) {
+                // Si existe, actualizamos la lista de cantidades en el mismo índice
+                int cantidadNueva = cantidades.get(indiceEncontrado) + cantidad;
+                cantidades.set(indiceEncontrado, cantidadNueva);
+            } else {
+                // Si es nuevo, añadimos a ambas listas para mantener la paridad
+                portfolio.add(a);
+                cantidades.add(cantidad);
+            }
+
             System.out.println("Compra exitosa: " + cantidad + " de " + a.getNombre());
         } else {
             System.out.println("No se cumple el perfil de riesgo o capital insuficiente.");
@@ -59,41 +76,35 @@ public class Inversor {
     }
 
     /**
-     * Recorre el portfolio y calcula la plusvalía o minusvalía total.
-     * (Simula el cambio de precio basado en la volatilidad)
+     * Simulación mensual recorriendo las listas coordinadas.
      */
     public double simularMes() {
         double balanceMes = 0;
 
-        for (Map.Entry<Activo, Integer> entry : portfolio.entrySet()) {
-            Activo activo = entry.getKey();
-            int cantidad = entry.getValue();
+        for (int i = 0; i < portfolio.size(); i++) {
+            Activo activo = portfolio.get(i);
+            int cantidad = cantidades.get(i);
 
             double precioAnterior = activo.getPrecioActual();
 
-            // Simulación simple: el precio cambia un % aleatorio basado en su volatilidad
+            // Simulación de fluctuación de precio
             double factorCambio = (Math.random() * 2 - 1) * (activo.calcularVolatilidad() / 100);
             double nuevoPrecio = precioAnterior * (1 + factorCambio);
 
-            activo.setPrecioActual(nuevoPrecio); // Actualizamos el precio del activo
+            activo.setPrecioActual(nuevoPrecio);
 
-            // Plusvalía = (Precio Nuevo - Precio Anterior) * cantidad
+            // Plusvalía/Minusvalía acumulada
             balanceMes += (nuevoPrecio - precioAnterior) * cantidad;
         }
 
         return balanceMes;
     }
 
-    /**
-     * Lógica de rebalanceo según pérdidas/ganancias.
-     */
     public void rebalancear() {
-        // En un caso real, aquí compararías el historial de 3 meses.
-        // Vender activos con pérdida > 10% y comprar ganadores > 15%.
-        System.out.println("Ejecutando algoritmo de rebalanceo...");
+        System.out.println("Rebalanceando portafolio de listas paralelas...");
     }
 
-    // Getters básicos
+    // Getters
     public double getCapital() { return capital; }
     public String getPerfil() { return perfil; }
 }
