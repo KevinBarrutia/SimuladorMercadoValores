@@ -22,6 +22,22 @@ public class Inversor {
         this.cantidades = new ArrayList<>();
     }
 
+    // Getters and Setters
+    public String getDni() {
+        return dni;
+    }
+    public void setDni(String dni) {
+        this.dni = dni;
+    }
+    public void setCapital(double capital) {
+        this.capital = capital;
+    }
+    public void setPerfil(String perfil) {
+        this.perfil = perfil;
+    }
+    public double getCapital() { return capital; }
+    public String getPerfil() { return perfil; }
+
     /**
      * Valida si el inversor puede comprar según su perfil de riesgo.
      */
@@ -96,7 +112,6 @@ public class Inversor {
             // Plusvalía/Minusvalía acumulada
             balanceMes += (nuevoPrecio - precioAnterior) * cantidad;
         }
-
         return balanceMes;
     }
 
@@ -104,7 +119,5 @@ public class Inversor {
         System.out.println("Rebalanceando portafolio de listas paralelas...");
     }
 
-    // Getters
-    public double getCapital() { return capital; }
-    public String getPerfil() { return perfil; }
+
 }
