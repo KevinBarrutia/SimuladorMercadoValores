@@ -17,12 +17,6 @@ public abstract class Activo {
     private static final double precioMinimo = 10.0;
     private static final double precioMaximo = 500.0;
 
-    /**
-     * Constructor para inicializar un activo con su identificación básica.
-     * Al invocarse, dispara automáticamente la generación del historial de precios.
-     * @param codigo Identificador alfanumérico.
-     * @param nombre Nombre oficial del activo.
-     */
     public Activo(String codigo, String nombre) {
         this.codigo = codigo;
         this.nombre = nombre;
@@ -51,17 +45,8 @@ public abstract class Activo {
     }
 
     // Metodos
-    /**
-     * Calcula el índice de riesgo o inestabilidad del activo.
-     * @return Valor numérico (double) que representa la volatilidad.
-     */
     public abstract double calcularVolatilidad();
 
-    /**
-     * Devuelve una lista con los precios de los últimos 7 periodos registrados.
-     * Si hay menos de 7, devuelve todos los disponibles.
-     * @return List de Double con los precios más recientes.
-     */
     public List<Double> getUltimos7Precios() {
         int n = historialPrecios.size();
 
@@ -70,10 +55,6 @@ public abstract class Activo {
         );
     }
 
-    /**
-     * Llena el historial con 30 precios aleatorios entre los límites configurados.
-     * Al finalizar, establece el precio actual basado en el último valor generado.
-     */
     public void generarHistorialPrecios(){
         Random r = new Random();
 
@@ -88,23 +69,15 @@ public abstract class Activo {
         }
     }
 
-    /**
-     * Determina la dirección del precio comparando el corto plazo contra el largo plazo.
-     * Según la consigna:
-     * - "alcista": si el promedio de los últimos 7 días > promedio de 30 días.
-     * - "bajista": si el precio actual < 80% del promedio de los 30 días.
-     * - "estable": en cualquier otro caso.
-     * * @return String con el estado de la tendencia.
-     */
     public String tendencia() {
-        // 1. Obtener el promedio de 30 días
+        // Obtener el promedio de 30 días
         double suma30 = 0;
         for (double p : historialPrecios) {
             suma30 += p;
         }
         double media30 = suma30 / historialPrecios.size();
 
-        // 2. Obtener el promedio de los últimos 7 días
+        // Obtener el promedio de los últimos 7 días
         List<Double> ultimos7 = getUltimos7Precios();
         double suma7 = 0;
         for (double p : ultimos7) {
@@ -112,7 +85,6 @@ public abstract class Activo {
         }
         double media7 = suma7 / ultimos7.size();
 
-        // 3. Aplicar lógica de la imagen
         if (media7 > media30) {
             return "alcista";
         } else if (precioActual < (media30 * 0.8)) {

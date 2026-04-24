@@ -5,12 +5,12 @@ import java.util.List;
 
 public class Inversor {
 
-    // Atributos según el requerimiento de listas paralelas
+    // Atributos
     private String dni;
     private double capital;
     private String perfil;
 
-    // Listas paralelas: el índice 0 de 'portfolio' corresponde al índice 0 de 'cantidades'
+    // Listas
     private ArrayList<Activo> portfolio;
     private ArrayList<Integer> cantidades;
 
@@ -38,9 +38,6 @@ public class Inversor {
     public double getCapital() { return capital; }
     public String getPerfil() { return perfil; }
 
-    /**
-     * Valida si el inversor puede comprar según su perfil de riesgo.
-     */
     public boolean puedeComprar(Activo activo, int cantidad) {
         double costoTotal = activo.getPrecioActual() * cantidad;
         double vol = activo.calcularVolatilidad();
@@ -59,14 +56,11 @@ public class Inversor {
         }
     }
 
-    /**
-     * Compra el activo y gestiona las dos listas mediante el mismo índice.
-     */
     public void comprar(Activo a, int cantidad) {
         if (puedeComprar(a, cantidad)) {
             this.capital -= (a.getPrecioActual() * cantidad);
 
-            // Buscamos si ya poseemos el activo para actualizar su cantidad
+            // Buscamos activo para actualizar su cantidad
             int indiceEncontrado = -1;
             for (int i = 0; i < portfolio.size(); i++) {
                 if (portfolio.get(i).getCodigo().equals(a.getCodigo())) {
@@ -80,20 +74,17 @@ public class Inversor {
                 int cantidadNueva = cantidades.get(indiceEncontrado) + cantidad;
                 cantidades.set(indiceEncontrado, cantidadNueva);
             } else {
-                // Si es nuevo, añadimos a ambas listas para mantener la paridad
+                // Si es nuevo, añadimos a ambas listas para mantener la igualdad
                 portfolio.add(a);
                 cantidades.add(cantidad);
             }
 
             System.out.println("Compra exitosa: " + cantidad + " de " + a.getNombre());
         } else {
-            System.out.println("No se cumple el perfil de riesgo o capital insuficiente.");
+            System.out.println("No se cumple el perfil de riesgo");
         }
     }
 
-    /**
-     * Simulación mensual recorriendo las listas coordinadas.
-     */
     public double simularMes() {
         double balanceMes = 0;
 
@@ -103,7 +94,7 @@ public class Inversor {
 
             double precioAnterior = activo.getPrecioActual();
 
-            // Simulación de fluctuación de precio
+            // Simulación de precios
             double factorCambio = (Math.random() * 2 - 1) * (activo.calcularVolatilidad() / 100);
             double nuevoPrecio = precioAnterior * (1 + factorCambio);
 

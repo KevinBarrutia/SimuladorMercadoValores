@@ -11,14 +11,6 @@ public class Criptomoneda extends Activo {
     private double minadoRestante;
     private ArrayList<Double> walletsGrandes; // porcentajes (ej: 25.0 = 25%)
 
-    /**
-     * Constructor para crear una criptomoneda con sus parámetros de red y suministro.
-     * @param codigo         Símbolo de la moneda.
-     * @param nombre         Nombre de la moneda.
-     * @param blockchain     Nombre de la red principal.
-     * @param maxSupply      Suministro total máximo.
-     * @param minadoRestante Unidades pendientes de emisión.
-     */
     public Criptomoneda(String codigo, String nombre,
                         String blockchain, double maxSupply, double minadoRestante) {
         super(codigo, nombre);
@@ -51,22 +43,11 @@ public class Criptomoneda extends Activo {
         return walletsGrandes;
     }
 
-    // Metodos
-    /**
-     * Registra el porcentaje de posesión de una billetera de gran tamaño (ballena).
-     * @param porcentaje Valor entre 0 y 100 que representa la cuota de mercado de la wallet.
-     */
+
     public void addWalletGrande(double porcentaje) {
         walletsGrandes.add(porcentaje);
     }
 
-
-    /**
-     * Calcula la volatilidad específica para criptomonedas usando la desviación estándar
-     * de los últimos 7 días, un factor de ajuste de mercado (2.5) y
-     * penalizaciones por concentración de ballenas.
-     * @return Índice de volatilidad ajustado.
-     */
     @Override
     public double calcularVolatilidad() {
         List<Double> ultimos7Precios = getUltimos7Precios();
@@ -99,11 +80,6 @@ public class Criptomoneda extends Activo {
         return volatilidad;
     }
 
-    /**
-     * Analiza el nivel de riesgo por centralización de la moneda.
-     * Evalúa si el suministro está concentrado en pocas manos (Top 1 y Top 3 wallets).
-     * @return String con el nivel de centralización ("alta", "media", "baja" o "desconocida").
-     */
     public String centralizacion() {
         if (walletsGrandes.isEmpty()) return "desconocida";
 

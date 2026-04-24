@@ -16,10 +16,10 @@ public class Accion extends Activo{
         this.numAccionesEnCirculacion = numAccionesEnCirculacion;
     }
 
+    // Getters and Setters
     public int getNumAccionesEnCirculacion() {
         return numAccionesEnCirculacion;
     }
-
     public void setNumAccionesEnCirculacion(int numAccionesEnCirculacion) {
         this.numAccionesEnCirculacion = numAccionesEnCirculacion;
     }
@@ -27,23 +27,18 @@ public class Accion extends Activo{
     public String getSector() {
         return sector;
     }
-
     public void setSector(String sector) {
         this.sector = sector;
     }
-
     public double getDividendoPorAccion() {
         return dividendoPorAccion;
     }
-
     public void setDividendoPorAccion(double dividendoPorAccion) {
         this.dividendoPorAccion = dividendoPorAccion;
     }
-
     public String getEmpresa() {
         return empresa;
     }
-
     public void setEmpresa(String empresa) {
         this.empresa = empresa;
     }
@@ -57,7 +52,7 @@ public class Accion extends Activo{
         for (double p : historialPrecios) {
             media += p;
         }
-        media /= historialPrecios.size(); //Sacar media
+        media /= historialPrecios.size();
 
         double sumaCuadrados = 0.0;
         for (double p : historialPrecios) {
@@ -69,7 +64,7 @@ public class Accion extends Activo{
 
     public double dividendoAnual(){
         if (sector.equalsIgnoreCase("Tecnología")){
-            return getDividendoPorAccion() * 4 * 0.70;
+            return getDividendoPorAccion() * 4 * 0.70; // reduce en 30%
         }else{
             return getDividendoPorAccion() * 4;
         }

@@ -12,7 +12,7 @@ public class Bono extends Activo{
 
     private static final ArrayList<String> paisesEmergentes =
             new ArrayList<>(Arrays.asList("Argentina","Turquía",
-                    "Venezuela","Pakistan","Nigeria"));//Convierte un ARRAY en una lista de tamaño fijo
+                    "Venezuela","Pakistan","Nigeria"));
 
     public Bono(String codigo, String nombre, String paisEmisor,
                 String rating, int vencimiento, double cuponAnual) {
